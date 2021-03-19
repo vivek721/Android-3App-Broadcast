@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
 
     private static final String INTENT_ACTION = "com.vivek.app.showWiki";
     private static final String MY_PERMISSION = "edu.uic.cs478.s19.kaboom";
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "App3_MainActivity";
     public static String[] showTitleArray;
     public static String[] imageArray;
     public static String[] urlArray;
@@ -160,7 +160,10 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
             case R.id.changeapp:
                 try {
                     url = urlArray[mShownIndex];
-                    checkPermissionAndBroadcast(url);
+                    Intent intent = new Intent();
+                    intent.setAction(INTENT_ACTION);
+                    intent.putExtra("url", url);
+                    sendBroadcast(intent) ;
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "No Show Selected", Toast.LENGTH_LONG).show();
                 }
@@ -175,17 +178,4 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         }
     }
 
-    private void checkPermissionAndBroadcast(String url) {
-        if (ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
-                == PackageManager.PERMISSION_GRANTED) {
-            Intent intent = new Intent();
-            intent.setAction(INTENT_ACTION);
-            intent.putExtra("url", url);
-            sendOrderedBroadcast(intent, MY_PERMISSION) ;
-        }
-        else {
-            ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION}, 0);
-        }
-
-    }
 }

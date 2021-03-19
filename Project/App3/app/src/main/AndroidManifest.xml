@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vivek.app3">
 
-<!--    <permission android:name="edu.uic.cs478.s19.kaboom"-->
-<!--        android:description="This will allow App1 and App2 access"-->
-<!--        android:label="kaboom"-->
-<!--        android:protectionLevel="dangerous" />-->
+    <permission android:name="edu.uic.cs478.s19.kaboom"
+        android:description="@string/HellYeah"
+        android:label="kaboom"
+        android:protectionLevel="dangerous" />
 
     <application
         android:allowBackup="true"
