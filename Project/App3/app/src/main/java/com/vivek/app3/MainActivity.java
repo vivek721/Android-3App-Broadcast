@@ -1,6 +1,7 @@
 package com.vivek.app3;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,22 +9,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity implements ShowsListFragment.ListSelectionListener {
     private static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
-    // intent to launch app1
+
     private static final String INTENT_ACTION = "com.vivek.app.showWiki";
+    private static final String MY_PERMISSION = "edu.uic.cs478.s19.kaboom";
     private static final String TAG = "MainActivity";
     public static String[] showTitleArray;
     public static String[] imageArray;
     public static String[] urlArray;
+
     // Fragment objects
     private final ImageFragment imageFragment = new ImageFragment();
     private final ShowsListFragment showsListFragment = new ShowsListFragment();
+
     // Keep shown index in activity to save and restore state
     int mShownIndex = -1;
     private FrameLayout showListFrameLayout, imageFrameLayout;
@@ -32,12 +38,14 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //handling Actionbar Icon and title
         getSupportActionBar().setTitle(" Application 3");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.appicon);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        // Get the string arrays with the show name and image location
+
+        // Get the string arrays with the show name, URL and image of the show
         showTitleArray = getResources().getStringArray(R.array.ShowTitles);
         urlArray = getResources().getStringArray(R.array.URLlist);
         imageArray = getResources().getStringArray(R.array.imageList);
@@ -152,13 +160,11 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
             case R.id.changeapp:
                 try {
                     url = urlArray[mShownIndex];
+                    checkPermissionAndBroadcast(url);
                 } catch (Exception e) {
-                    url = null;
+                    Toast.makeText(getApplicationContext(), "No Show Selected", Toast.LENGTH_LONG).show();
                 }
-                Intent intent = new Intent();
-                intent.setAction(INTENT_ACTION);
-                intent.putExtra("url", url);
-                sendBroadcast(intent);
+
                 return true;
             case R.id.exit:
                 this.finish();
@@ -167,5 +173,19 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void checkPermissionAndBroadcast(String url) {
+        if (ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent();
+            intent.setAction(INTENT_ACTION);
+            intent.putExtra("url", url);
+            sendOrderedBroadcast(intent, MY_PERMISSION) ;
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION}, 0);
+        }
+
     }
 }
