@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/showListFrame"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/purple_200"/>
+
+    <FrameLayout
+        android:id="@+id/imageFrame"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"/>
+
+<!--    <fragment-->
+<!--        android:id="@+id/showListFrame"-->
+<!--        android:layout_width="0px"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1"-->
+<!--        class="com.vivek.app3.ShowsListFragment" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/imageFrame"-->
+<!--        android:layout_width="0px"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="2"-->
+<!--        class="com.vivek.app3.ImageFragment" />-->
+
+
+</LinearLayout>
