@@ -1,15 +1,12 @@
 package com.vivek.app3;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -30,7 +27,8 @@ public class ImageFragment extends Fragment {
         if (newIndex < 0 || newIndex >= mImageArrayLength)
             return;
         mCurrIdx = newIndex;
-        mImageView.setImageResource(MainActivity.imageArray[mCurrIdx]);
+        int imageResource = getResources().getIdentifier("@drawable/" + MainActivity.imageArray[mCurrIdx], null, "com.vivek.app3");
+        mImageView.setImageResource(imageResource);
     }
 
     @Override

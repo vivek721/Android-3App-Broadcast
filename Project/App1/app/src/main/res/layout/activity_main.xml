@@ -4,27 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+    android:background="@drawable/backgroundjpg"
     android:orientation="vertical"
     android:gravity="center">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Greetings!"
-        android:textSize="25dp"
-        android:padding="25dp"/>
+        android:text="Welcome to App1!"
+        android:textSize="28dp"
+        android:textColor="#bcbfc2"
+        android:padding="20dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button"
-        android:ems="8"
-        android:text="Launch App2"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button1"
-        android:ems="8"
-        android:text="Launch webpage"/>
+        android:ems="9"
+        android:textSize="20sp"
+        android:text="Launch Application 2"/>
 
 </LinearLayout>

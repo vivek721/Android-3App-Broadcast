@@ -6,10 +6,16 @@
         <item>Game Of Thrones</item>
         <item>The Office</item>
     </string-array>
-<!--    <integer-array name="ShowImage">-->
-<!--        <item>R.drawable.friends</item>-->
-<!--        <item>R.drawable.breakingbad</item>-->
-<!--        <item>R.drawable.gameofthrones</item>-->
-<!--        <item>R.drawable.Office</item>-->
-<!--    </integer-array>-->
+    <string-array name="URLlist">
+        <item>https://en.wikipedia.org/wiki/Friends</item>
+        <item>https://en.wikipedia.org/wiki/Breaking_Bad</item>
+        <item>https://en.wikipedia.org/wiki/Game_of_Thrones</item>
+        <item>https://www.imdb.com/title/tt0386676/</item>
+    </string-array>
+    <string-array name="imageList">
+        <item>friends</item>
+        <item>breakingbad</item>
+        <item>gameofthrones</item>
+        <item>office</item>
+    </string-array>
 </resources>

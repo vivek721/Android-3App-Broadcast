@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private static final String INTENT_ACTION =
-            "com.vivek.app.Intent";
+            "com.vivek.app.showWiki";
     private MyBroadcastReceiver MyReceiver;
     private IntentFilter intentFilter;
     private Button button;
@@ -20,6 +20,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //handling Actionbar Icon and title
+        getSupportActionBar().setTitle(" Application 2");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         // setting Intent Filter action and priority
         intentFilter = new IntentFilter(INTENT_ACTION);

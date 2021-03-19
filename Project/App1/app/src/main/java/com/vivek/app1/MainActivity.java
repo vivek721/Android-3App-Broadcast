@@ -22,6 +22,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //handling Actionbar Icon and title
+        getSupportActionBar().setTitle(" Application 1");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         // setting Intent Filter action and priority
         MyReceiver = new MyBroadcastReceiver() ;
@@ -35,13 +40,6 @@ public class MainActivity extends AppCompatActivity {
             intent.setClassName("com.vivek.app2", "com.vivek.app2.MainActivity");
             startActivity(intent);
 
-        });
-        Button button1;
-        button1 = (Button) findViewById(R.id.button1);
-        button1.setOnClickListener((View v) -> {
-            Intent intent = new Intent();
-            intent.setClassName("com.vivek.app1", "com.vivek.app1.TvshowActivity");
-            startActivity(intent);
         });
     }
 

@@ -8,9 +8,12 @@ import android.widget.Toast;
 public class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println(intent);
+        String url = intent.getStringExtra("url");
+        System.out.println(url + " " + intent);
+
         Intent i = new Intent();
         i.setClassName("com.vivek.app1", "com.vivek.app1.TvshowActivity");
+        i.putExtra("url", url);
         context.startActivity(i);
     }
 }

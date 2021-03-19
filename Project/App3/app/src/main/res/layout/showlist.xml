@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5dip"
+    android:textColor="#bcbfc2"
+    android:padding="10dp"
     android:textSize="32sp"
-    android:background = "?android:attr/activatedBackgroundIndicator">
+    android:background = "?android:attr/activatedBackgroundIndicator"
+    android:backgroundTint="#568291">
 </TextView>

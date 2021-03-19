@@ -1,8 +1,6 @@
 package com.vivek.app3;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,12 +15,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity implements ShowsListFragment.ListSelectionListener {
     private static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
-    public static String[] showTitleArray;
-    public static Integer[] imageArray = new Integer[4];
-
     // intent to launch app1
-    private static final String INTENT_ACTION = "com.vivek.app.Intent";
+    private static final String INTENT_ACTION = "com.vivek.app.showWiki";
     private static final String TAG = "MainActivity";
+    public static String[] showTitleArray;
+    public static String[] imageArray;
+    public static String[] urlArray;
     // Fragment objects
     private final ImageFragment imageFragment = new ImageFragment();
     private final ShowsListFragment showsListFragment = new ShowsListFragment();
@@ -31,27 +29,27 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
     private FrameLayout showListFrameLayout, imageFrameLayout;
     private FragmentManager fragmentManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //handling Actionbar Icon and title
+        getSupportActionBar().setTitle(" Application 3");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.appicon);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         // Get the string arrays with the show name and image location
         showTitleArray = getResources().getStringArray(R.array.ShowTitles);
-//        imageArray = getResources().getStringArray(R.array.ShowImage);
-        imageArray[0] = R.drawable.friends;
-        imageArray[1] = R.drawable.breakingbad;
-        imageArray[2] = R.drawable.gameofthrones;
-        imageArray[3] = R.drawable.office;
+        urlArray = getResources().getStringArray(R.array.URLlist);
+        imageArray = getResources().getStringArray(R.array.imageList);
 
         setContentView(R.layout.activity_main);
 
-        System.out.println("asdasdasdasd");
         Log.i(TAG, "onCreate: ");
 
         // Get references to the TitleFragment and to the QuotesFragment
         showListFrameLayout = (FrameLayout) findViewById(R.id.showListFrame);
         imageFrameLayout = (FrameLayout) findViewById(R.id.imageFrame);
+
 
         fragmentManager = getSupportFragmentManager();
 
@@ -131,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         }
 
         if (imageFragment.getShownIndex() != index) {
+
             // Tell the QuoteFragment to show the quote string at position index
             imageFragment.showImageAtIndex(index);
         }
@@ -147,18 +146,21 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
     // method for handling options menu click operations
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        System.out.println(item.getItemId());
+        String url;
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.changeapp:
-                System.out.println("asdasdasdas");
-                Intent intent = new Intent() ;
+                try {
+                    url = urlArray[mShownIndex];
+                } catch (Exception e) {
+                    url = null;
+                }
+                Intent intent = new Intent();
                 intent.setAction(INTENT_ACTION);
-                intent.putExtra("url", "www.yahoo.com");
+                intent.putExtra("url", url);
                 sendBroadcast(intent);
                 return true;
             case R.id.exit:
-                System.out.println("Exit");
                 this.finish();
                 System.exit(0);
                 return true;
