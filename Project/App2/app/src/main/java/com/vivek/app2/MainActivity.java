@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
 
-
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener((View v) -> {
             checkPermissionAndBroadcast();
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkPermissionAndBroadcast() {
         if (ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
                 == PackageManager.PERMISSION_GRANTED) {
+            registerBroadcast();
             Log.i(TAG, "checkPermissionAndBroadcast: Permission Granted");
             Intent intent = new Intent();
             intent.setClassName("com.vivek.app3", "com.vivek.app3.MainActivity");
@@ -53,26 +53,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onRequestPermissionsResult(int code, String[] permissions, int[] results) {
-        if (results.length > 0) {
-            if (results[0] == PackageManager.PERMISSION_GRANTED) {
-                // setting Intent Filter action and priority
-                Log.i(TAG, "onRequestPermissionsResult: Broadcastreveiver registerd");
-                // setting Intent Filter action and priority
-                intentFilter = new IntentFilter(INTENT_ACTION);
-                intentFilter.setPriority(9);
+    protected void registerBroadcast() {
+        intentFilter = new IntentFilter(INTENT_ACTION);
+        intentFilter.setPriority(9);
 
-                //Registering the broadcaster
-                MyReceiver = new MyBroadcastReceiver();
-                registerReceiver(MyReceiver, intentFilter);
-            } else {
-                Log.i(TAG, "onRequestPermissionsResult: Broadcastreveiver not registered");
-                Toast.makeText(this, "Bummer: No Permission Granted", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        }
+        //Registering the broadcaster
+        MyReceiver = new MyBroadcastReceiver();
+        registerReceiver(MyReceiver, intentFilter);
     }
-
 
     @Override
     protected void onDestroy() {

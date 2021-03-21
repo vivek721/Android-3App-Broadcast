@@ -193,4 +193,11 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         bundle.putInt("index", mShownIndex);
         bundle.putBoolean("imageAdded", imageAdded);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mShownIndex = -1;
+        imageAdded = false;
+    }
 }

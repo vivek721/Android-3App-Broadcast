@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkPermissionAndBroadcast() {
         if (ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
                 == PackageManager.PERMISSION_GRANTED) {
+            registerBroadcast();
             Log.i(TAG, "checkPermissionAndBroadcast: Permission Granted");
             Intent intent = new Intent();
             intent.setClassName("com.vivek.app2", "com.vivek.app2.MainActivity");
@@ -58,23 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onRequestPermissionsResult(int code, String[] permissions, int[] results) {
-        if (results.length > 0) {
-            if (results[0] == PackageManager.PERMISSION_GRANTED) {
-                // setting Intent Filter action and priority
-                Log.i(TAG, "onRequestPermissionsResult: Broadcastreveiver registerd");
-                MyReceiver = new MyBroadcastReceiver();
-                intentFilter = new IntentFilter(INTENT_ACTION);
-                intentFilter.setPriority(1);
-                registerReceiver(MyReceiver, intentFilter);
-            } else {
-                Log.i(TAG, "onRequestPermissionsResult: Broadcastreveiver not registered");
-                Toast.makeText(this, "Bummer: No Permission Granted", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        }
+    protected void registerBroadcast(){
+        MyReceiver = new MyBroadcastReceiver();
+        intentFilter = new IntentFilter(INTENT_ACTION);
+        intentFilter.setPriority(1);
+        registerReceiver(MyReceiver, intentFilter);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
