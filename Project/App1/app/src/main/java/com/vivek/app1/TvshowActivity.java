@@ -17,6 +17,7 @@ public class TvshowActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String url = intent.getExtras().getString("url");
 
+        // Show web view for the url
         if(url != null){
             WebView myWebView = (WebView) findViewById(R.id.webpage);
             myWebView.setWebViewClient(new WebViewClient());

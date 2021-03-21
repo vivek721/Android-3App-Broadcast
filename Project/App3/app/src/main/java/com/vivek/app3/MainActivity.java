@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity implements ShowsListFragment.ListSelectionListener {
+public class MainActivity extends AppCompatActivity implements
+        ShowsListFragment.ListSelectionListener {
     private static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
-
     private static final String INTENT_ACTION = "com.vivek.app.showWiki";
     private static final String MY_PERMISSION = "edu.uic.cs478.s19.kaboom";
     private static final String TAG = "App3_MainActivity";
@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
     public static int mShownIndex = -1;
     public static boolean imageAdded = false;
     // Fragment objects
-    private ImageFragment imageFragment = new ImageFragment();
-    private ShowsListFragment showsListFragment = new ShowsListFragment();
+    private final ImageFragment imageFragment = new ImageFragment();
+    private final ShowsListFragment showsListFragment = new ShowsListFragment();
     private FrameLayout showListFrameLayout, imageFrameLayout;
     private FragmentManager fragmentManager;
 
@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         imageArray = getResources().getStringArray(R.array.imageList);
 
         setContentView(R.layout.activity_main);
-
-        Log.i(TAG, "onCreate: ");
 
         // Get references to the TitleFragment and to the QuotesFragment
         showListFrameLayout = (FrameLayout) findViewById(R.id.showListFrame);
@@ -74,10 +72,6 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         // Commit the FragmentTransaction
         fragmentTransaction.commit();
 
-//        imageFragment = (ImageFragment) fragmentManager.findFragmentByTag("imageFragment");
-//        if (imageFragment == null) {
-//            imageFragment = new ImageFragment();
-//        }
         // Add a OnBackStackChangedListener to reset the layout when the back stack changes
         fragmentManager.addOnBackStackChangedListener(
 
@@ -87,13 +81,13 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
                     }
                 });
 
-        //Setup Layout when the View is changed
+        //Setup Layout when the orientation is changed
         setLayout();
     }
 
     private void setLayout() {
 
-        //Default view
+        // Default view when nothing is selected
         showListFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 0, MATCH_PARENT, 1f));
         imageFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
@@ -102,16 +96,14 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         int orientation = getResources().getConfiguration().orientation;
         if (imageFragment.isAdded() || imageAdded) {
             Log.i(TAG, "setLayout: inside lreasd");
-            // Make the ShowsListFragment occupy the entire layout
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                // In landscape
+                // In LANDSCAPE mode
                 showListFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(
                         0, MATCH_PARENT, 1f));
                 imageFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
                         MATCH_PARENT, 2f));
             } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                // In landscape
-                // Determine whether the imageFragment has been added
+                // In PORTRAIT mode
                 showListFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
                         MATCH_PARENT, 0f));
                 imageFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
@@ -147,10 +139,9 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
             // Force Android to execute the committed FragmentTransaction
             fragmentManager.executePendingTransactions();
         }
-
+        Log.i(TAG, "onListSelection: " + index);
         // Tell the imageFragment to show the quote string at position index
         imageFragment.showImageAtIndex(index);
-
     }
 
     // method for creating options menu
@@ -168,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.changeapp:
+                // send ordered broadcast when this option is selected
                 try {
                     url = urlArray[mShownIndex];
                     Intent intent = new Intent();
@@ -180,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
                 }
                 return true;
             case R.id.exit:
+                // Exit the app when this option is selected
                 this.finish();
                 System.exit(0);
                 return true;
@@ -188,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         }
     }
 
+    //Saving the value of the selected list item and checking if the image is added
     public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putInt("index", mShownIndex);

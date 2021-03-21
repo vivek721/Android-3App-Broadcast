@@ -15,10 +15,7 @@ import androidx.fragment.app.ListFragment;
 
 public class ShowsListFragment extends ListFragment {
 
-    static final String OLD_POSITION = "oldPos";
     private static final String TAG = "App3_ShowsListFragment";
-    Integer mOldPosition = null;
-    private TextView showName = null;
     private ListSelectionListener mListener = null;
 
     // Called when the user selects an item from the List
@@ -58,7 +55,6 @@ public class ShowsListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, getClass().getSimpleName() + ":entered onCreateView()");
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -75,7 +71,7 @@ public class ShowsListFragment extends ListFragment {
 
         //get index value after orientation change
         int mIndex = MainActivity.mShownIndex;
-        if(mIndex != -1) {
+        if (mIndex != -1) {
             Log.i(TAG, "onActivityCreated: " + mIndex);
             getListView().setItemChecked(mIndex, true);
         }
@@ -84,7 +80,7 @@ public class ShowsListFragment extends ListFragment {
     // Callback interface that allows this Fragment to notify the ImageFragment when
     // user clicks on a List Item
     public interface ListSelectionListener {
-        public void onListSelection(int index);
+        void onListSelection(int index);
     }
 
 }

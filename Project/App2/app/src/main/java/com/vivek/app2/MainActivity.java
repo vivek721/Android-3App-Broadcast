@@ -31,19 +31,15 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_action_name);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-
+        //handling button click
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener((View v) -> {
             checkPermissionAndBroadcast();
         });
     }
 
+    //check permission and broadcast the intent and register
     private void checkPermissionAndBroadcast() {
-        if(ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
-                != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "checkPermissionAndBroadcast: asdasdas");
-            ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION}, 0);
-        }
         if (ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
                 == PackageManager.PERMISSION_GRANTED) {
             registerBroadcast();
@@ -51,21 +47,23 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setClassName("com.vivek.app3", "com.vivek.app3.MainActivity");
             startActivity(intent);
-        } else{
-            Toast.makeText(this, "Allow and Click Button to start App3", Toast.LENGTH_LONG)
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION}, 0);
+            Toast.makeText(this, "No Permission now: Allow to open App3", Toast.LENGTH_LONG)
                     .show();
         }
     }
 
+    //Registering for broadcast sent by app3
     protected void registerBroadcast() {
+        Log.i(TAG, "registerBroadcast: Registering broadcast receiver");
         intentFilter = new IntentFilter(INTENT_ACTION);
         intentFilter.setPriority(9);
-
-        //Registering the broadcaster
         MyReceiver = new MyBroadcastReceiver();
         registerReceiver(MyReceiver, intentFilter);
     }
 
+    //Unregister broadcast when activity is destroyed
     @Override
     protected void onDestroy() {
         super.onDestroy();

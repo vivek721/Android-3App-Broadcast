@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String INTENT_ACTION = "com.vivek.app.showWiki";
     private static final String MY_PERMISSION = "edu.uic.cs478.s19.kaboom";
-    private static final String TAG = "App1 MainActivity";
+    private static final String TAG = "App1_MainActivity";
     private MyBroadcastReceiver MyReceiver;
     private IntentFilter intentFilter;
     private Button button;
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION}, 0);
         }
 
+        //Button click handler
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener((View v) -> {
             checkPermissionAndBroadcast();
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //check permission and broadcast the intent and register
     private void checkPermissionAndBroadcast() {
         if (ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -59,12 +61,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Registering for broadcast sent by app3
     protected void registerBroadcast(){
         MyReceiver = new MyBroadcastReceiver();
         intentFilter = new IntentFilter(INTENT_ACTION);
         intentFilter.setPriority(1);
         registerReceiver(MyReceiver, intentFilter);
     }
+
+    //Unregister broadcast when activity is destroyed
     @Override
     protected void onDestroy() {
         super.onDestroy();

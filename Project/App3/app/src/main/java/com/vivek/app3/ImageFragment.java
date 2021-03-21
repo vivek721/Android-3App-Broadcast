@@ -18,29 +18,6 @@ public class ImageFragment extends Fragment {
     private int mCurrIdx = -1;
     private int mImageArrayLength;
 
-    int getShownIndex() {
-        return mCurrIdx;
-    }
-
-    // Show the Quote string at position newIndex
-    void showImageAtIndex(int newIndex) {
-        mCurrIdx = newIndex;
-        Log.i(TAG, "showImageAtIndex: " + newIndex);
-        if (newIndex < 0 || newIndex >= mImageArrayLength)
-            return;
-        Log.i(TAG, "showImageAtIndex: ");
-        int imageResource = getResources().getIdentifier("@drawable/" + MainActivity.imageArray[mCurrIdx], null, "com.vivek.app3");
-        Log.i(TAG, "showImageAtIndex: " + imageResource);
-        mImageView.setImageResource(imageResource);
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        Log.i(TAG, getClass().getSimpleName() + ":entered onAttach()");
-        super.onAttach(context);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, getClass().getSimpleName() + ":entered onCreate()");
@@ -76,9 +53,30 @@ public class ImageFragment extends Fragment {
         }
     }
 
+    // Show the image at position index
+    void showImageAtIndex(int index) {
+        mCurrIdx = index;
+        Log.i(TAG, "showImageAtIndex: " + index);
+        if (index < 0 || index >= mImageArrayLength)
+            return;
+        Log.i(TAG, "showImageAtIndex: ");
+        int imageResource = getResources().getIdentifier("@drawable/" + MainActivity.imageArray[mCurrIdx], null, "com.vivek.app3");
+        Log.i(TAG, "showImageAtIndex: " + imageResource);
+        mImageView.setImageResource(imageResource);
+    }
+
     @Override
-    public void onDestroy(){
+    public void onAttach(Context context) {
+        Log.i(TAG, getClass().getSimpleName() + ":entered onAttach()");
+        super.onAttach(context);
+    }
+
+
+    @Override
+    public void onDestroy() {
         super.onDestroy();
+
+        //setting image added flag to false
         MainActivity.imageAdded = false;
     }
 
