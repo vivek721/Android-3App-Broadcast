@@ -39,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkPermissionAndBroadcast() {
+        if(ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "checkPermissionAndBroadcast: asdasdas");
+            ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION}, 0);
+        }
         if (ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
                 == PackageManager.PERMISSION_GRANTED) {
             registerBroadcast();
@@ -46,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setClassName("com.vivek.app3", "com.vivek.app3.MainActivity");
             startActivity(intent);
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION}, 0);
+        } else{
             Toast.makeText(this, "Allow and Click Button to start App3", Toast.LENGTH_LONG)
                     .show();
         }
