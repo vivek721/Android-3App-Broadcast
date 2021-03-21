@@ -45,14 +45,17 @@ public class MainActivity extends AppCompatActivity {
             registerBroadcast();
             Log.i(TAG, "checkPermissionAndBroadcast: Permission Granted");
             Intent intent = new Intent();
-            intent.setClassName("com.vivek.app3", "com.vivek.app3.MainActivity");
+            intent.setClassName("com.vivek.app3",
+                    "com.vivek.app3.MainActivity");
             startActivity(intent);
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION}, 0);
-            Toast.makeText(this, "No Permission now: Allow to open App3", Toast.LENGTH_LONG)
-                    .show();
+            ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION},
+                    0);
+            Toast.makeText(this, "No Permission now: Allow to open App3",
+                    Toast.LENGTH_LONG).show();
         }
     }
+
 
     //Registering for broadcast sent by app3
     protected void registerBroadcast() {
