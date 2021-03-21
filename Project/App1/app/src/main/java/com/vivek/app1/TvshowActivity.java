@@ -25,8 +25,5 @@ public class TvshowActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No Show Selected" , Toast.LENGTH_LONG).show();
             this.finish();
         }
-
-
-
     }
 }

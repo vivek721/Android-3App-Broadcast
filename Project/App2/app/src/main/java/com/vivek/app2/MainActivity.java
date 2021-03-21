@@ -31,13 +31,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_action_name);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        // setting Intent Filter action and priority
-        intentFilter = new IntentFilter(INTENT_ACTION);
-        intentFilter.setPriority(9);
 
-        //Registering the broadcaster
-        MyReceiver = new MyBroadcastReceiver();
-        registerReceiver(MyReceiver, intentFilter);
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener((View v) -> {
@@ -57,8 +51,28 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Allow and Click Button to start App3", Toast.LENGTH_LONG)
                     .show();
         }
-
     }
+
+    public void onRequestPermissionsResult(int code, String[] permissions, int[] results) {
+        if (results.length > 0) {
+            if (results[0] == PackageManager.PERMISSION_GRANTED) {
+                // setting Intent Filter action and priority
+                Log.i(TAG, "onRequestPermissionsResult: Broadcastreveiver registerd");
+                // setting Intent Filter action and priority
+                intentFilter = new IntentFilter(INTENT_ACTION);
+                intentFilter.setPriority(9);
+
+                //Registering the broadcaster
+                MyReceiver = new MyBroadcastReceiver();
+                registerReceiver(MyReceiver, intentFilter);
+            } else {
+                Log.i(TAG, "onRequestPermissionsResult: Broadcastreveiver not registered");
+                Toast.makeText(this, "Bummer: No Permission Granted", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
 
     @Override
     protected void onDestroy() {

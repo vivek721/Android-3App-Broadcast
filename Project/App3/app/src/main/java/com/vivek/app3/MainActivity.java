@@ -1,7 +1,6 @@
 package com.vivek.app3;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -25,13 +23,12 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
     public static String[] showTitleArray;
     public static String[] imageArray;
     public static String[] urlArray;
-
-    // Fragment objects
-    private final ImageFragment imageFragment = new ImageFragment();
-    private final ShowsListFragment showsListFragment = new ShowsListFragment();
-
     // Keep shown index in activity to save and restore state
-    int mShownIndex = -1;
+    public static int mShownIndex = -1;
+    public static boolean imageAdded = false;
+    // Fragment objects
+    private ImageFragment imageFragment = new ImageFragment();
+    private ShowsListFragment showsListFragment = new ShowsListFragment();
     private FrameLayout showListFrameLayout, imageFrameLayout;
     private FragmentManager fragmentManager;
 
@@ -58,9 +55,15 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         showListFrameLayout = (FrameLayout) findViewById(R.id.showListFrame);
         imageFrameLayout = (FrameLayout) findViewById(R.id.imageFrame);
 
-
         fragmentManager = getSupportFragmentManager();
 
+        // Retrieve old state if present
+        if (savedInstanceState != null) {
+            mShownIndex = savedInstanceState.getInt("index");
+            imageAdded = savedInstanceState.getBoolean("imageAdded");
+        }
+
+        Log.i(TAG, "onCreate: " + mShownIndex + " " + imageAdded);
         // Begin a new FragmentTransaction
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
@@ -71,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         // Commit the FragmentTransaction
         fragmentTransaction.commit();
 
+//        imageFragment = (ImageFragment) fragmentManager.findFragmentByTag("imageFragment");
+//        if (imageFragment == null) {
+//            imageFragment = new ImageFragment();
+//        }
         // Add a OnBackStackChangedListener to reset the layout when the back stack changes
         fragmentManager.addOnBackStackChangedListener(
 
@@ -79,32 +86,38 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
                         setLayout();
                     }
                 });
+
+        //Setup Layout when the View is changed
+        setLayout();
     }
 
     private void setLayout() {
+
+        //Default view
+        showListFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                0, MATCH_PARENT, 1f));
+        imageFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
+                MATCH_PARENT, 0f));
+
         int orientation = getResources().getConfiguration().orientation;
-        if (!imageFragment.isAdded()) {
+        if (imageFragment.isAdded() || imageAdded) {
+            Log.i(TAG, "setLayout: inside lreasd");
             // Make the ShowsListFragment occupy the entire layout
-            showListFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                    0, MATCH_PARENT, 1f));
-            imageFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
-                    MATCH_PARENT, 0f));
-        } else {
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 // In landscape
-                // Determine whether the imageFragment has been added
-                showListFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
-                        MATCH_PARENT, 1f));
+                showListFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                        0, MATCH_PARENT, 1f));
                 imageFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
                         MATCH_PARENT, 2f));
-            } else {
+            } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                // In landscape
+                // Determine whether the imageFragment has been added
                 showListFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
                         MATCH_PARENT, 0f));
                 imageFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
                         MATCH_PARENT, 1f));
             }
         }
-
     }
 
     // Implement Java interface ListSelectionListener defined in TitlesFragment
@@ -124,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
             // Add the QuoteFragment to the layout
             fragmentTransaction.add(R.id.imageFrame,
                     imageFragment);
-            imageFragment.setRetainInstance(true);
 
             // Add this FragmentTransaction to the backstack
             fragmentTransaction.addToBackStack(null);
@@ -136,11 +148,9 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
             fragmentManager.executePendingTransactions();
         }
 
-        if (imageFragment.getShownIndex() != index) {
+        // Tell the imageFragment to show the quote string at position index
+        imageFragment.showImageAtIndex(index);
 
-            // Tell the QuoteFragment to show the quote string at position index
-            imageFragment.showImageAtIndex(index);
-        }
     }
 
     // method for creating options menu
@@ -163,11 +173,11 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
                     Intent intent = new Intent();
                     intent.setAction(INTENT_ACTION);
                     intent.putExtra("url", url);
-                    sendBroadcast(intent) ;
+                    sendOrderedBroadcast(intent, MY_PERMISSION);
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "No Show Selected", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "No Show Selected",
+                            Toast.LENGTH_LONG).show();
                 }
-
                 return true;
             case R.id.exit:
                 this.finish();
@@ -178,4 +188,9 @@ public class MainActivity extends AppCompatActivity implements ShowsListFragment
         }
     }
 
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putInt("index", mShownIndex);
+        bundle.putBoolean("imageAdded", imageAdded);
+    }
 }

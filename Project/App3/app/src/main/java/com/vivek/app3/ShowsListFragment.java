@@ -16,7 +16,7 @@ import androidx.fragment.app.ListFragment;
 public class ShowsListFragment extends ListFragment {
 
     static final String OLD_POSITION = "oldPos";
-    private static final String TAG = "ShowsListFragment";
+    private static final String TAG = "App3_ShowsListFragment";
     Integer mOldPosition = null;
     private TextView showName = null;
     private ListSelectionListener mListener = null;
@@ -51,7 +51,7 @@ public class ShowsListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, getClass().getSimpleName() + ":entered onCreate()");
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
     }
 
     @Override
@@ -72,6 +72,13 @@ public class ShowsListFragment extends ListFragment {
 
         // Set the list choice mode to allow only one selection at a time
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        //get index value after orientation change
+        int mIndex = MainActivity.mShownIndex;
+        if(mIndex != -1) {
+            Log.i(TAG, "onActivityCreated: " + mIndex);
+            getListView().setItemChecked(mIndex, true);
+        }
     }
 
     // Callback interface that allows this Fragment to notify the ImageFragment when
