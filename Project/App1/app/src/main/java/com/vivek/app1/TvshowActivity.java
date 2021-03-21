@@ -13,7 +13,15 @@ public class TvshowActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //handling Actionbar Icon and title
+        getSupportActionBar().setTitle(" Application 1");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         setContentView(R.layout.activity_tvshow);
+
         Intent intent = getIntent();
         String url = intent.getExtras().getString("url");
 

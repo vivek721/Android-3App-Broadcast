@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -40,30 +41,51 @@ public class MainActivity extends AppCompatActivity {
 
     //check permission and broadcast the intent and register
     private void checkPermissionAndBroadcast() {
+        ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION},
+                0);
         if (ActivityCompat.checkSelfPermission(this, MY_PERMISSION)
                 == PackageManager.PERMISSION_GRANTED) {
             registerBroadcast();
             Log.i(TAG, "checkPermissionAndBroadcast: Permission Granted");
-            Intent intent = new Intent();
-            intent.setClassName("com.vivek.app3",
-                    "com.vivek.app3.MainActivity");
-            startActivity(intent);
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{MY_PERMISSION},
-                    0);
-            Toast.makeText(this, "No Permission now: Allow to open App3",
-                    Toast.LENGTH_LONG).show();
+            startIntentApp3();
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.i(TAG, "onRequestPermissionsResult: ");
+        if (grantResults.length > 0) {
+            // Register Broadcast
+            Log.i(TAG, "onRequestPermissionsResult: Granted");
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                registerBroadcast();
+                startIntentApp3();
+            } else {
+                Log.i(TAG, "onRequestPermissionsResult: denied");
+                Toast.makeText(this, "Permission Denied",
+                        Toast.LENGTH_SHORT).show();
+                this.finish();
+                System.exit(0);
+            }
+        }
+    }
 
     //Registering for broadcast sent by app3
-    protected void registerBroadcast() {
+    public void registerBroadcast() {
         Log.i(TAG, "registerBroadcast: Registering broadcast receiver");
         intentFilter = new IntentFilter(INTENT_ACTION);
         intentFilter.setPriority(9);
         MyReceiver = new MyBroadcastReceiver();
         registerReceiver(MyReceiver, intentFilter);
+    }
+
+    public void startIntentApp3() {
+        Intent intent = new Intent();
+        intent.setClassName("com.vivek.app3",
+                "com.vivek.app3.MainActivity");
+        startActivity(intent);
     }
 
     //Unregister broadcast when activity is destroyed
@@ -74,3 +96,4 @@ public class MainActivity extends AppCompatActivity {
             unregisterReceiver(MyReceiver);
     }
 }
+
